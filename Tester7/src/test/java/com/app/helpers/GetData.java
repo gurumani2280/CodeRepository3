@@ -14,6 +14,35 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 
 public class GetData {
 	
+	
+	public static String[][] allExcelData(String excelPath, String sheetName){
+		String[][] values = null;
+		String data;
+		int rows = 0, cells = 0;
+		File f = new File(excelPath);
+		try {
+			FileInputStream fis = new FileInputStream(f);
+			Workbook wb = WorkbookFactory.create(fis);
+			Sheet sheet = wb.getSheet(sheetName);
+			rows = sheet.getPhysicalNumberOfRows();
+			cells = sheet.getRow(0).getPhysicalNumberOfCells();
+			values = new String[rows][cells];
+			int i = 0;
+			for (Row row : sheet) {
+				int j = 0;
+				for (Cell cell : row) {
+					data = cell.toString();
+					values[i][j++] = data;
+				}
+				i++;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return values;
+		
+	}
+	
 	public static String fromExcel(String filepath, String sheetName, 
 			int rIndex, int cIndex)
 	{
